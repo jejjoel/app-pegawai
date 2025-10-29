@@ -40,9 +40,37 @@
             </td>
         </tr>
         <tr>
-            <td colspan="2">
-                <button type="submit">Update</button>
+        <tr>
+            <td><label for="departemen_id">Departemen:</label></td>
+            <td>
+                <select id="departemen_id" name="departemen_id" required>
+                    <option value="">-- Pilih Departemen --</option>
+                    @foreach($departments as $dept)
+                    <option value="{{ $dept->id }}"
+                        {{ old('departemen_id', $employee->departemen_id) == $dept->id ? 'selected' : '' }}>
+                        {{ $dept->nama_departemen }}
+                    </option>
+                    @endforeach
+                </select>
             </td>
+        </tr>
+        <tr>
+            <td><label for="jabatan_id">Jabatan:</label></td>
+            <td>
+                <select id="jabatan_id" name="jabatan_id" required>
+                    <option value="">-- Pilih Jabatan --</option>
+                    @foreach($positions as $pos)
+                    <option value="{{ $pos->id }}"
+                        {{ old('jabatan_id', $employee->jabatan_id) == $pos->id ? 'selected' : '' }}>
+                        {{ $pos->nama_jabatan }}
+                    </option>
+                    @endforeach
+                </select>
+            </td>
+        </tr>
+        <td colspan="2">
+            <button type="submit">Update</button>
+        </td>
         </tr>
     </table>
 </form>

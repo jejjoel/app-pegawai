@@ -25,6 +25,7 @@
     <footer>
         <p>&copy; {{ date('Y') }} App Pegawai</p>
     </footer>
+    @stack('scripts')
 </body>
 
 </html>
