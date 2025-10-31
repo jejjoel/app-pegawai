@@ -1,42 +1,37 @@
-@extends('layouts.master')
-@section('title', 'Detail Absensi')
+<!DOCTYPE html>
+<html lang="en">
 
-@section('content')
-<div class="container mt-5">
-    <h1 class="mb-4">Detail Absensi</h1>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Absensi</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
 
-    <table border="1" cellpadding="8" cellspacing="0">
-        <tr>
-            <th>ID</th>
-            <td>{{ $attendance->id }}</td>
-        </tr>
-        <tr>
-            <th>Karyawan</th>
-            {{-- Tampilkan nama dari relasi --}}
-            <td>{{ $attendance->employee?->nama_lengkap }}</td>
-        </tr>
-        <tr>
-            <th>Tanggal</th>
-            <td>{{ $attendance->tanggal }}</td>
-        </tr>
-        <tr>
-            <th>Waktu Masuk</th>
-            <td>{{ $attendance->waktu_masuk }}</td>
-        </tr>
-        <tr>
-            <th>Waktu Keluar</th>
-            <td>{{ $attendance->waktu_keluar }}</td>
-        </tr>
-        <tr>
-            <th>Status Absensi</th>
-            <td>{{ $attendance->status_absensi }}</td>
-        </tr>
-        <tr>
-            <th>Dibuat Pada</th>
-            <td>{{ $attendance->created_at }}</td>
-        </tr>
-    </table>
-    <br>
-    <a href="{{ route('attendance.index') }}">Kembali ke Daftar</a>
-</div>
-@endsection
+<body>
+    <div class="container mt-5 mb-5">
+        <h1 class="mb-4">Detail Absensi</h1>
+
+        <div class="card">
+            <div class="card-header">
+                <h3>Informasi Detail</h3>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><b>ID:</b> {{ $attendance->id }}</li>
+                <li class="list-group-item"><b>Karyawan:</b> {{ $attendance->employee?->nama_lengkap }}</li>
+                <li class="list-group-item"><b>Tanggal:</b> {{ $attendance->tanggal }}</li>
+                <li class="list-group-item"><b>Waktu Masuk:</b> {{ $attendance->waktu_masuk }}</li>
+                <li class="list-group-item"><b>Waktu Keluar:</b> {{ $attendance->waktu_keluar }}</li>
+                <li class="list-group-item"><b>Status Absensi:</b> {{ $attendance->status_absensi }}</li>
+                <li class="list-group-item"><b>Dibuat Pada:</b> {{ $attendance->created_at }}</li>
+            </ul>
+        </div>
+
+        <br>
+        <a href="{{ route('attendance.index') }}" class="btn btn-secondary">Kembali ke Daftar</a>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

@@ -1,92 +1,98 @@
-@extends('layouts.master')
-@section('title', 'Edit Data Gaji')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Data Gaji</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5 mb-5">
+        <h1 class="mb-4">Edit Data Gaji</h1>
 
-@section('content')
-<div class="container mt-5">
-    <h1 class="mb-4">Edit Data Gaji</h1>
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <strong>Whoops! Sepertinya ada yang salah:</strong>
+                <ul class="mt-2">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
-    {{-- Arahkan action ke 'update' dan tambahkan @method('PUT') --}}
-    <form action="{{ route('salaries.update', $salary->id) }}" method="POST">
-        @csrf
-        @method('PUT')
+        <form action="{{ route('salaries.update', $salary->id) }}" method="POST">
+            @csrf
+            @method('PUT')
+            <div class="mb-3">
+                <label for="karyawan_id" class="form-label">Karyawan</label>
+                <select id="karyawan_id" name="karyawan_id" class="form-select" required>
+                    <option value="">-- Pilih Karyawan --</option>
+                    @foreach($employees as $emp)
+                    <option value="{{ $emp->id }}"
+                        {{ old('karyawan_id', $salary->karyawan_id) == $emp->id ? 'selected' : '' }}>
+                        {{ $emp->nama_lengkap }}
+                    </option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="bulan" class="form-label">Bulan</label>
+                <input type="month" id="bulan" name="bulan" class="form-control"
+                    value="{{ old('bulan', $salary->bulan) }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="gaji_pokok" class="form-label">Gaji Pokok</label>
+                <input type="number" id="gaji_pokok" name="gaji_pokok" class="form-control"
+                    value="{{ old('gaji_pokok', $salary->gaji_pokok) }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="tunjangan" class="form-label">Tunjangan</label>
+                <input type="number" id="tunjangan" name="tunjangan" class="form-control"
+                    value="{{ old('tunjangan', $salary->tunjangan) }}">
+            </div>
+            <div class="mb-3">
+                <label for="potongan" class="form-label">Potongan</label>
+                <input type="number" id="potongan" name="potongan" class="form-control"
+                    value="{{ old('potongan', $salary->potongan) }}">
+            </div>
+            <div class="mb-3">
+                <label for="total_gaji" class="form-label">Total Gaji</label>
+                <input type="number" id="total_gaji" name="total_gaji" class="form-control"
+                    value="{{ old('total_gaji', $salary->total_gaji) }}" readonly>
+            </div>
 
-        <table cellpadding="5">
-            <tr>
-                <td><label for="karyawan_id">Karyawan</label></td>
-                <td>
-                    <select id="karyawan_id" name="karyawan_id" required>
-                        <option value="">-- Pilih Karyawan --</option>
-                        @foreach($employees as $emp)
-                        {{-- Tambahkan logika 'selected' --}}
-                        <option value="{{ $emp->id }}"
-                            {{ old('karyawan_id', $salary->karyawan_id) == $emp->id ? 'selected' : '' }}>
-                            {{ $emp->nama_lengkap }}
-                        </option>
-                        @endforeach
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td><label for="bulan">Bulan</label></td>
-                {{-- Isi 'value' dengan data lama --}}
-                <td><input type="month" id="bulan" name="bulan"
-                        value="{{ old('bulan', $salary->bulan) }}" required></td>
-            </tr>
-            <tr>
-                <td><label for="gaji_pokok">Gaji Pokok</label></td>
-                {{-- Isi 'value' dengan data lama --}}
-                <td><input type="number" id="gaji_pokok" name="gaji_pokok"
-                        value="{{ old('gaji_pokok', $salary->gaji_pokok) }}" required></td>
-            </tr>
-            <tr>
-                <td><label for="tunjangan">Tunjangan</label></td>
-                {{-- Isi 'value' dengan data lama --}}
-                <td><input type="number" id="tunjangan" name="tunjangan"
-                        value="{{ old('tunjangan', $salary->tunjangan) }}"></td>
-            </tr>
-            <tr>
-                <td><label for="potongan">Potongan</label></td>
-                {{-- Isi 'value' dengan data lama --}}
-                <td><input type="number" id="potongan" name="potongan"
-                        value="{{ old('potongan', $salary->potongan) }}"></td>
-            </tr>
-            <tr>
-                <td><label for="total_gaji">Total Gaji</label></td>
-                {{-- Isi 'value' dengan data lama dan 'readonly' --}}
-                <td><input type="number" id="total_gaji" name="total_gaji"
-                        value="{{ old('total_gaji', $salary->total_gaji) }}" readonly></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td><button type="submit">Update</button></td>
-            </tr>
-        </table>
-    </form>
-</div>
-@endsection
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary">Update</button>
+                <a href="{{ route('salaries.index') }}" class="btn btn-secondary">Kembali ke Daftar</a>
+            </div>
+        </form>
+    </div>
 
-@push('scripts')
-<script>
-    const gajiPokokEl = document.getElementById('gaji_pokok');
-    const tunjanganEl = document.getElementById('tunjangan');
-    const potonganEl = document.getElementById('potongan');
-    const totalGajiEl = document.getElementById('total_gaji');
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    {{-- ========================================================= --}}
+    {{-- !! KODE JAVASCRIPT DIPINDAHKAN KE SINI !! --}}
+    {{-- ========================================================= --}}
+    <script>
+        const gajiPokokEl = document.getElementById('gaji_pokok');
+        const tunjanganEl = document.getElementById('tunjangan');
+        const potonganEl = document.getElementById('potongan');
+        const totalGajiEl = document.getElementById('total_gaji');
 
-    function hitungTotalGaji() {
-        const pokok = parseFloat(gajiPokokEl.value) || 0;
-        const tunjangan = parseFloat(tunjanganEl.value) || 0;
-        const potongan = parseFloat(potonganEl.value) || 0;
+        function hitungTotalGaji() {
+            const pokok = parseFloat(gajiPokokEl.value) || 0;
+            const tunjangan = parseFloat(tunjanganEl.value) || 0;
+            const potongan = parseFloat(potonganEl.value) || 0;
+            const total = (pokok + tunjangan) - potongan;
+            totalGajiEl.value = total;
+        }
 
-        const total = (pokok + tunjangan) - potongan;
+        gajiPokokEl.addEventListener('input', hitungTotalGaji);
+        tunjanganEl.addEventListener('input', hitungTotalGaji);
+        potonganEl.addEventListener('input', hitungTotalGaji);
 
-        // Set nilai field 'total_gaji'
-        totalGajiEl.value = total;
-    }
-
-    gajiPokokEl.addEventListener('input', hitungTotalGaji);
-    tunjanganEl.addEventListener('input', hitungTotalGaji);
-    potonganEl.addEventListener('input', hitungTotalGaji);
-
-    hitungTotalGaji();
-</script>
-@endpush
+        hitungTotalGaji(); // Hitung saat halaman dimuat
+    </script>
+</body>
+</html>

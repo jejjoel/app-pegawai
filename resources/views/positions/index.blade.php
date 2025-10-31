@@ -3,12 +3,17 @@
 
 @section('content')
 <div class="container mt-5">
-    <h1 class="mb-4">Daftar Jabatan</h1>
 
-    <a href="{{ route('positions.create') }}" style="margin-bottom: 10px; display: inline-block;">Tambah Jabatan</a>
+    {{-- 1. Membuat tombol dan judul jadi sejajar --}}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mb-0">Daftar Jabatan</h1>
+        {{-- Mengubah link <a> menjadi tombol biru (btn-primary) --}}
+        <a href="{{ route('positions.create') }}" class="btn btn-primary">Tambah Jabatan</a>
+    </div>
 
-    <table border="1" cellpadding="5" cellspacing="0">
-        <thead>
+    {{-- 2. Menerapkan style Bootstrap pada tabel --}}
+    <table class="table table-striped table-hover">
+        <thead class="table-dark">
             <tr>
                 <th>Nama Jabatan</th>
                 <th>Gaji Pokok</th>
@@ -21,15 +26,14 @@
             <tr>
                 <td>{{ $position->nama_jabatan }}</td>
                 <td>{{ $position->gaji_pokok }}</td>
-
                 <td>
-                    {{-- Ubah 'departments.' menjadi 'positions.' --}}
-                    <a href="{{ route('positions.show', $position->id) }}">Detail</a> |
-                    <a href="{{ route('positions.edit', $position->id) }}">Edit</a> |
-                    <form action="{{ route('positions.destroy', $position->id) }}" method="POST" style="display:inline;">
+                    {{-- 3. Mengubah aksi menjadi tombol-tombol kecil --}}
+                    <form action="{{ route('positions.destroy', $position->id) }}" method="POST" class="d-inline">
+                        <a href="{{ route('positions.show', $position->id) }}" class="btn btn-info btn-sm">Detail</a>
+                        <a href="{{ route('positions.edit', $position->id) }}" class="btn btn-warning btn-sm">Edit</a>
                         @csrf
                         @method('DELETE')
-                        <button type="submit" onclick="return confirm('Yakin ingin menghapus?')">Delete</button>
+                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus?')">Delete</button>
                     </form>
                 </td>
             </tr>
@@ -37,7 +41,7 @@
         </tbody>
     </table>
 
-    {{-- Untuk link pagination --}}
+    {{-- 4. Memperbaiki tampilan pagination --}}
     <div class="mt-3">
         {!! $positions->links() !!}
     </div>

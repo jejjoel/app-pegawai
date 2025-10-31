@@ -1,49 +1,69 @@
-<h2>Edit Data Pegawai</h2>
-<form action="{{ route('employees.update', $employee->id) }}" method="POST">
-    @csrf
-    @method('PUT')
-    <table>
-        <tr>
-            <td>Nama Lengkap</td>
-            <td><input type="text" name="nama_lengkap" value="{{ old('nama_lengkap', $employee->nama_lengkap) }}"></td>
-        </tr>
-        <tr>
-            <td>Email</td>
-            <td><input type="email" name="email" value="{{ old('email', $employee->email) }}"></td>
-        </tr>
-        <tr>
-            <td>Nomor Telepon</td>
-            <td><input type="text" name="nomor_telepon" value="{{ old('nomor_telepon', $employee->nomor_telepon) }}"></td>
-        </tr>
-        <tr>
-            <td>Tanggal Lahir</td>
-            <td><input type="date" name="tanggal_lahir" value="{{ old('tanggal_lahir', $employee->tanggal_lahir) }}"></td>
-        </tr>
-        <tr>
-            <td>Alamat</td>
-            <td><input type="text" name="alamat" value="{{ old('alamat', $employee->alamat) }}"></td>
-        </tr>
-        <tr>
-            <td>Tanggal Masuk</td>
-            <td><input type="date" name="tanggal_masuk" value="{{ old('tanggal_masuk', $employee->tanggal_masuk) }}"></td>
-        </tr>
-        <tr>
-            <td>Status</td>
-            <td>
-                <select name="status">
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Edit Data Pegawai</title>
+    {{-- 1. TAMBAHKAN LINK BOOTSTRAP CSS & META VIEWPORT --}}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    {{-- 2. BUNGKUS KONTEN DENGAN CONTAINER BOOTSTRAP (mt-5 mb-5) --}}
+    <div class="container mt-5 mb-5">
+        <h2>Edit Data Pegawai</h2>
+
+        @if ($errors->any())
+        {{-- 3. UBAH TAMPILAN ERROR MENJADI 'ALERT' BOOTSTRAP --}}
+        <div class="alert alert-danger">
+            <strong>Whoops! Sepertinya ada yang salah:</strong>
+            <ul class="mt-2">
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
+
+        <form action="{{ route('employees.update', $employee->id) }}" method="POST">
+            @csrf
+            @method('PUT')
+
+            {{-- 4. TERAPKAN KELAS FORM BOOTSTRAP --}}
+            <div class="mb-3">
+                <label class="form-label">Nama Lengkap</label>
+                <input type="text" name="nama_lengkap" class="form-control" value="{{ old('nama_lengkap', $employee->nama_lengkap) }}">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input type="email" name="email" class="form-control" value="{{ old('email', $employee->email) }}">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Nomor Telepon</label>
+                <input type="text" name="nomor_telepon" class="form-control" value="{{ old('nomor_telepon', $employee->nomor_telepon) }}">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Tanggal Lahir</label>
+                <input type="date" name="tanggal_lahir" class="form-control" value="{{ old('tanggal_lahir', $employee->tanggal_lahir) }}">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Alamat</label>
+                <input type="text" name="alamat" class="form-control" value="{{ old('alamat', $employee->alamat) }}">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Tanggal Masuk</label>
+                <input type="date" name="tanggal_masuk" class="form-control" value="{{ old('tanggal_masuk', $employee->tanggal_masuk) }}">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Status</label>
+                <select name="status" class="form-select">
                     <option value="aktif" {{ old('status', $employee->status) == 'aktif' ? 'selected' : '' }}>Aktif</option>
-                    <option value="tidak aktif" {{ old('status', $employee->status) == 'tidak aktif' ? 'selected' : '' }}>Tidak
-
-                        Aktif</option>
-
+                    <option value="nonaktif" {{ old('status', $employee->status) == 'nonaktif' ? 'selected' : '' }}>Nonaktif</option>
                 </select>
-            </td>
-        </tr>
-        <tr>
-        <tr>
-            <td><label for="departemen_id">Departemen:</label></td>
-            <td>
-                <select id="departemen_id" name="departemen_id" required>
+            </div>
+            <div class="mb-3">
+                <label for="departemen_id" class="form-label">Departemen:</label>
+                <select id="departemen_id" name="departemen_id" class="form-select" required>
                     <option value="">-- Pilih Departemen --</option>
                     @foreach($departments as $dept)
                     <option value="{{ $dept->id }}"
@@ -52,12 +72,10 @@
                     </option>
                     @endforeach
                 </select>
-            </td>
-        </tr>
-        <tr>
-            <td><label for="jabatan_id">Jabatan:</label></td>
-            <td>
-                <select id="jabatan_id" name="jabatan_id" required>
+            </div>
+            <div class="mb-3">
+                <label for="jabatan_id" class="form-label">Jabatan:</label>
+                <select id="jabatan_id" name="jabatan_id" class="form-select" required>
                     <option value="">-- Pilih Jabatan --</option>
                     @foreach($positions as $pos)
                     <option value="{{ $pos->id }}"
@@ -66,11 +84,17 @@
                     </option>
                     @endforeach
                 </select>
-            </td>
-        </tr>
-        <td colspan="2">
-            <button type="submit">Update</button>
-        </td>
-        </tr>
-    </table>
-</form>
+            </div>
+
+            {{-- 5. UBAH TOMBOL MENJADI BOOTSTRAP --}}
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary">Update</button>
+                <a href="{{ route('employees.index') }}" class="btn btn-secondary">Kembali ke Daftar</a>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
